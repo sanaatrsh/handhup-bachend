@@ -36,6 +36,6 @@ public function users()
 
 public function category()
 {
-    $this->belongsTo(category::class, 'category_id', 'id');
+    $this->belongsTo(category::class,'category_id', 'id');
 }
 }
