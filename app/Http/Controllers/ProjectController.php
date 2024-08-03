@@ -31,6 +31,7 @@ class ProjectController extends Controller
 
         $request->merge(["owner_id" => Auth::user()->id]);
 
+
         $data = $request->validate([
             'owner_id' => ['required', 'exists:users,id',],
             'category_id' => ['required', 'exists:categories,id'],
