@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 
@@ -35,7 +36,7 @@ class ProductController extends Controller
             'available' => ['required', 'boolean'],
             'images' => ['nullable', 'array'],
             //remember me to edit here:
-            'images.*' => ['image'],
+            // 'images.*' => ['image'],
             'description' => ['nullable'],
 
         ]);
@@ -47,17 +48,19 @@ class ProductController extends Controller
 
         // $dataWithOutImages = $request->except('images');
         // $product = Product::create($dataWithOutImages);
-        for ($i = 0; $i < 2; $i++) {
+        // for ($i = 0; $i < 2; $i++) {
 
-            $data['images[i]'] = $this->uploadImage($request);
-        }
+        //     $data['images[i]'] = $this->uploadImage($request);
+        // }
 
 
         // $imagesData =  $data['images[]'];
 
-        dd($data['images']);
+        // dd($data['images']);
         // $productImages = ProductImage::create($imagesData);
-        // return $product;
+        $product = Product::create($data);
+
+        return $product;
     }
 
 
@@ -79,6 +82,26 @@ class ProductController extends Controller
         $product->update($data);
         return response()->json(['oldData' => $oldProduct, 'newData' => $product]);
     }
+    
+    
+
+    
+        public function search(Request $request)
+        {
+            // الحصول على الكلمة المفتاحية من طلب HTTP
+            $query = $request->input('query');
+    
+            // البحث عن المنتجات التي تحتوي على الكلمة المفتاحية في الاسم
+            $products = Product::where('name', 'like', $query . '%')->get();
+    
+            // عرض النتائج كـ JSON
+            return response()->json($products);
+        
+    }
+    
+  
+
+
 
     /**
      * Remove the specified resource from storage.
