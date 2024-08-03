@@ -14,4 +14,12 @@ class Product extends Model
     {
         $this->hasMany(ProductImage::class);
     }
+    public function project()
+{
+    $this->belongsTo(Project::class, 'project_id', 'id');
+}
+public function category()
+{
+    $this->belongsTo(category::class, 'category_id', 'id');
+}
 }

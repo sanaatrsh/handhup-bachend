@@ -9,4 +9,9 @@ class review extends Model
 {
     use HasFactory;
     protected $guarded = [];
+    public function users()
+{
+    $this->belongsTo(User::class, 'user_id', 'id');
 }
+}
+

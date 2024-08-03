@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use Illuminate\Http\Request;
-
-
-
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 class ProjectController extends Controller
 {
 
@@ -38,7 +37,9 @@ class ProjectController extends Controller
 
         $project = Project::create($data);
         // return Response::json([$project, 200, "created"]);
-        return $project;
+        $user = Auth::user(); 
+        $user->type = 'owner'; // تعيين نوع المستخدم إلى مالك المشروع
+        $user->save(); 
     }
 
 
