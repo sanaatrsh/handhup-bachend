@@ -27,6 +27,7 @@ class ProjectController extends Controller
 
     public function store(Request $request)
     {
+        $request->merge(["owner_id" =>Auth::user()->id]);
         $data = $request->validate([
             'owner_id' => ['required', 'exists:users,id',],
             'category_id' => ['required', 'exists:categories,id'],
