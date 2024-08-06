@@ -15,6 +15,9 @@ class ProductImageController extends Controller
     public function store(Request $request)
     {
         //
+
+
+
     }
 
     /**

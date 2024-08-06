@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-<<<<<<< HEAD
-
-=======
+<<<<<<<<< Temporary merge branch 1
 use App\Models\User;
->>>>>>> brunch
+=========
+
+>>>>>>>>> Temporary merge branch 2
 class ProjectController extends Controller
 {
 
@@ -31,7 +31,10 @@ class ProjectController extends Controller
 
     public function store(Request $request)
     {
-        $request->merge(["owner_id" =>Auth::user()->id]);
+
+        $request->merge(["owner_id" => Auth::user()->id]);
+
+
         $data = $request->validate([
             'owner_id' => ['required', 'exists:users,id',],
             'category_id' => ['required', 'exists:categories,id'],
@@ -41,10 +44,14 @@ class ProjectController extends Controller
 
 
         $project = Project::create($data);
-        // return Response::json([$project, 200, "created"]);
-        $user = Auth::user(); 
+        // // return Response::json([$project, 200, "created"]);
+        $user = Auth::user();
         $user->type = 'owner'; // تعيين نوع المستخدم إلى مالك المشروع
-        $user->save(); 
+        $user->save();
+        return [
+            "project" => $project,
+            "messgae" => "project added"
+        ];
     }
 
 
