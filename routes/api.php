@@ -30,9 +30,9 @@ Route::get('project', [ProjectController::class, 'index'])->name('project.index'
 Route::get('project/{id}', [ProjectController::class, 'show'])->name('project.show')->withoutMiddleware(['auth:sanctum']);
 
 
-Route::apiResource('Project/{project_id}/product', ProductController::class)->middleware('auth:sanctum')->except('show', 'index');
-Route::get('Project/{project_id}/product', [ProductController::class, 'index'])->withoutMiddleware(['auth:sanctum']);
-Route::get('Project/{project_id}/product/{id}', [ProductController::class, 'show'])->withoutMiddleware(['auth:sanctum']);
+Route::apiResource('Projects/{project_id}/product', ProductController::class)->middleware('auth:sanctum')->except('show', 'index');
+Route::get('Projects/{project_id}/product', [ProductController::class, 'index'])->withoutMiddleware(['auth:sanctum']);
+Route::get('Projects/{project_id}/product/{id}', [ProductController::class, 'show'])->withoutMiddleware(['auth:sanctum']);
 Route::post('search', [ProductController::class, 'search'])->name('project.show')->withoutMiddleware(['auth:sanctum']);
 
 Route::apiResource('category', CategoryController::class);
