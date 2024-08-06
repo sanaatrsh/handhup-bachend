@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+<<<<<<<<< Temporary merge branch 1
 use App\Models\User;
+=========
 
+>>>>>>>>> Temporary merge branch 2
 class ProjectController extends Controller
 {
 
