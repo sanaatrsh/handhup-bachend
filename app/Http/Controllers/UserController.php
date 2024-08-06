@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Project;
 use App\Models\User;
+use Database\Seeders\product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -17,6 +19,12 @@ class UserController extends Controller
     public function index()
     {
         return User::all();
+    }
+
+
+    public function showOwner(string $project_id)
+    {
+        return User::where('id', Project::select('owner_id')->where('id', $project_id))->get();
     }
 
     /**
@@ -95,10 +103,7 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-    }
+
 
     /**
      * Show the form for editing the specified resource.

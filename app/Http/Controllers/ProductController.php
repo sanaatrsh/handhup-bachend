@@ -36,29 +36,27 @@ class ProductController extends Controller
             'available' => ['required', 'boolean'],
             'images' => ['nullable', 'array'],
             //remember me to edit here:
-            // 'images.*' => ['image'],
+            'images.*' => ['image'],
             'description' => ['nullable'],
 
         ]);
 
-        // if ($validators->fails()) {
-        //     // Handle validation errors
-        //     return response()->json(['error' => $validator->errors()], 400);
-        // }
-
-        // $dataWithOutImages = $request->except('images');
-        // $product = Product::create($dataWithOutImages);
-        // for ($i = 0; $i < 2; $i++) {
-
-        //     $data['images[i]'] = $this->uploadImage($request);
-        // }
+        // dd($data['images']);
+        // $images = $data['images'];
+        // dd($images);
+        $project_id = $request->input('project_id');
 
 
-        // $imagesData =  $data['images[]'];
+        $dataWithOutImages = $request->except('images');
+        $product = Product::create($dataWithOutImages);
+        // dd($product->id);
+        $imagesData = $this->uploadImage($request, $project_id, $product->id);
 
         // dd($data['images']);
-        // $productImages = ProductImage::create($imagesData);
-        $product = Product::create($data);
+
+        // $imagesData =  $data['images'];
+
+        // $product = Product::create($data);
 
         return $product;
     }
@@ -82,24 +80,23 @@ class ProductController extends Controller
         $product->update($data);
         return response()->json(['oldData' => $oldProduct, 'newData' => $product]);
     }
-    
-    
 
-    
-        public function search(Request $request)
-        {
-            // الحصول على الكلمة المفتاحية من طلب HTTP
-            $query = $request->input('query');
-    
-            // البحث عن المنتجات التي تحتوي على الكلمة المفتاحية في الاسم
-            $products = Product::where('name', 'like', $query . '%')->get();
-    
-            // عرض النتائج كـ JSON
-            return response()->json($products);
-        
+
+
+
+    public function search(Request $request)
+    {
+        // الحصول على الكلمة المفتاحية من طلب HTTP
+        $query = $request->input('query');
+
+        // البحث عن المنتجات التي تحتوي على الكلمة المفتاحية في الاسم
+        $products = Product::where('name', 'like', $query . '%')->get();
+
+        // عرض النتائج كـ JSON
+        return response()->json($products);
     }
-    
-  
+
+
 
 
 
@@ -108,7 +105,7 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        Product::findOrFail($id);
+        $product = Product::findOrFail($id);
         Product::destroy($id);
 
         return [
@@ -116,15 +113,30 @@ class ProductController extends Controller
         ];
     }
 
-    protected function uploadImage(Request $request)
+    protected function uploadImage(Request $request, string $project_id, int $id)
     {
-        if (!$request->hasFile('image')) {
-            return;
+        // if (!$request->hasFile('image')) {
+        //     // dd('hi');
+        //     return;
+        // }
+        $file = $request->file('images');
+        // dd($request);
+        for ($i = 0; $i < count($file); $i++) {
+            $path = $file[$i]->store('uploads', [
+                'disk' => 'public'
+            ]);
+            // dd($path);   
+            $imagesData = [
+                'product_id' => $id,
+
+                'url' => $path,
+
+            ];
+
+            $productImages = ProductImage::create($imagesData);
+            // $imagesData[$i] = [$path, $project_id];
         }
-        $file = $request->file('image');
-        $path = $file->store('uploads', [
-            'disk' => 'public'
-        ]);
-        return $path;
+        // dd($imagesData);
+        // return $imagesData;
     }
 }

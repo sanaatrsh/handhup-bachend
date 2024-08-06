@@ -36,18 +36,22 @@ class ProjectController extends Controller
             'owner_id' => ['required', 'exists:users,id',],
             'category_id' => ['required', 'exists:categories,id'],
             'name' => ['required', 'string'],
+            'image' => ['nullable', 'image'],
             'description' => ['string'],
         ]);
 
 
-        $project = Project::create($data);
-        // // return Response::json([$project, 200, "created"]);
+        $imagesData = $this->uploadImage($request);
+        $data = $request->merge(['imagePath' => $imagesData]);
+        $data = $request->except('image');
         $user = Auth::user();
         $user->type = 'owner'; // تعيين نوع المستخدم إلى مالك المشروع
         $user->save();
+        // dd($data);
+        $project = Project::create($data);
         return [
             "project" => $project,
-            "messgae" => "project added"
+            "message" => "project added"
         ];
     }
 
@@ -55,8 +59,7 @@ class ProjectController extends Controller
     public function update(Request $request, string $id)
     {
         $data = $request->validate([
-            // 'owner_id' => ['required', 'exists:users,id',],
-            // 'category_id' => ['required', 'exists:categories,id'],
+            'category_id' => ['required', 'exists:categories,id'],
             'name' => ['required', 'string', 'unique:projects,name'],
             'description' => ['string'],
         ]);
@@ -75,5 +78,18 @@ class ProjectController extends Controller
         return [
             'message' => 'project deleted.'
         ];
+    }
+
+    //myFunctions
+    protected function uploadImage(Request $request)
+    {
+        if (!$request->hasFile('image')) {
+            return;
+        }
+        $file = $request->file('image');
+        $path = $file->store('uploads', [
+            'disk' => 'public'
+        ]);
+        return $path;
     }
 }

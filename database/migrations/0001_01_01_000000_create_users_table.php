@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('password');
             $table->string('user_name')->unique();
             $table->string('phone_number')->unique();
-            $table->date('birth_date');
             $table->string('address');
             $table->string('image')->nullable();
             $table->enum('type', ['user', 'owner', 'admin'])->default('user');
