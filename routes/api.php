@@ -25,9 +25,9 @@ Route::post('login', [UserController::class, 'login']);
 Route::post('logout/{token?}', [UserController::class, 'logout'])->middleware('auth:sanctum');
 
 
-Route::apiResource('project', ProjectController::class)->middleware('auth:sanctum')->except(['index', 'show']);
-Route::get('project', [ProjectController::class, 'index'])->name('project.index')->withoutMiddleware(['auth:sanctum']);
-Route::get('project/{id}', [ProjectController::class, 'show'])->name('project.show')->withoutMiddleware(['auth:sanctum']);
+Route::apiResource('Projects', ProjectController::class)->middleware('auth:sanctum')->except(['index', 'show']);
+Route::get('Projects', [ProjectController::class, 'index'])->name('project.index')->withoutMiddleware(['auth:sanctum']);
+Route::get('Projects/{id}', [ProjectController::class, 'show'])->name('project.show')->withoutMiddleware(['auth:sanctum']);
 
 
 Route::apiResource('Projects/{project_id}/product', ProductController::class)->middleware('auth:sanctum')->except('show', 'index');
