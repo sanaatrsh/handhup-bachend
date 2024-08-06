@@ -25,23 +25,25 @@ Route::post('login', [UserController::class, 'login']);
 Route::post('logout/{token?}', [UserController::class, 'logout'])->middleware('auth:sanctum');
 
 
-Route::apiResource('project', ProjectController::class)->middleware('auth:sanctum')->except(['index', 'show']);
-Route::get('project', [ProjectController::class, 'index'])->name('project.index')->withoutMiddleware(['auth:sanctum']);
-Route::get('project/{id}', [ProjectController::class, 'show'])->name('project.show')->withoutMiddleware(['auth:sanctum']);
+Route::apiResource('Projects', ProjectController::class)->middleware('auth:sanctum')->except(['index', 'show']);
+Route::get('Projects', [ProjectController::class, 'index'])->name('project.index')->withoutMiddleware(['auth:sanctum']);
+Route::get('Projects/{id}', [ProjectController::class, 'show'])->name('project.show')->withoutMiddleware(['auth:sanctum']);
 
 
-Route::apiResource('{project_id}/product', ProductController::class)->middleware('auth:sanctum')->except('show', 'index');
-Route::get('{project_id}/product', [ProductController::class, 'index'])->withoutMiddleware(['auth:sanctum']);
-Route::get('{project_id}/product/{id}', [ProductController::class, 'show'])->withoutMiddleware(['auth:sanctum']);
+Route::apiResource('Projects/{project_id}/product', ProductController::class)->middleware('auth:sanctum')->except('show', 'index');
+Route::get('Projects/{project_id}/product', [ProductController::class, 'index'])->withoutMiddleware(['auth:sanctum']);
+Route::get('Projects/{project_id}/product/{id}', [ProductController::class, 'show'])->withoutMiddleware(['auth:sanctum']);
 Route::post('search', [ProductController::class, 'search'])->name('project.show')->withoutMiddleware(['auth:sanctum']);
 
 Route::apiResource('category', CategoryController::class);
 
-Route::apiResource('report', ReportController::class);
+Route::apiResource('report', ReportController::class)->middleware('auth:sanctum');
 
-Route::apiResource('review', ReviewController::class);
+Route::apiResource('review', ReviewController::class)->middleware('auth:sanctum');
 
 Route::apiResource('bill', BillController::class);
 
 Route::post('auth/access-token', [AccessTokensController::class, 'store'])
     ->middleware('guest:sanctum');
+
+Route::get('project/{project_id}/owner', [UserController::class, 'showOwner']);

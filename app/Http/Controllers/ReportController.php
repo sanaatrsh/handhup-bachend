@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\report;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ReportController extends Controller
 {
@@ -28,6 +29,9 @@ class ReportController extends Controller
      */
     public function store(Request $request)
     {
+        $request->merge(["user_id" => Auth::user()->id]);
+
+
         $data = $request->validate([
             'user_id' => ['required', 'exists:users,id',],
             'project_id' => ['required', 'exists:projects,id'],
