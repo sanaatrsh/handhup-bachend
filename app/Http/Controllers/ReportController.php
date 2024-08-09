@@ -27,15 +27,18 @@ class ReportController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, string $project_id)
     {
-        $request->merge(["user_id" => Auth::user()->id]);
+        $request->merge([
+            "user_id" => Auth::user()->id,
+            "project_id" => $project_id
+        ]);
 
 
         $data = $request->validate([
             'user_id' => ['required', 'exists:users,id',],
             'project_id' => ['required', 'exists:projects,id'],
-            'description' => ['string', 'nullable'],
+            'description' => ['string', 'required'],
         ]);
 
         $report = report::create($data);
