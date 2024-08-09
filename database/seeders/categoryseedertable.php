@@ -14,7 +14,7 @@ class categoryseedertable extends Seeder
     public function run(): void
     {       Category::factory(10)->create();
         Category::factory()->create([
-            'name' => 'Test User',
+            'name' => 'Test User', 
             'email' => 'test@example.com',
         ]);
         
