@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\review;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
 
 class ReviewController extends Controller
 {
@@ -25,12 +27,24 @@ class ReviewController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, string $project_id, string $product_id)
     {
+        $request->merge(
+            [
+                "user_id" => Auth::user()->id,
+                "project_id" => $project_id,
+                "product_id" => $product_id
+            ],
+        );
+        // dd($project_id);
+        // dd($request);
+
         $data = $request->validate([
             'user_id' => ['required', 'exists:users,id'],
             'project_id' => ['required', 'exists:projects,id'],
-            'rate' => ['required', 'integer', 'between:0,5']
+            'product_id' => ['required', 'exists:products,id'],
+            'rate' => ['required', 'integer', 'between:0,5'],
+            'description' => ['nullable']
         ]);
 
         $review = review::create($data);

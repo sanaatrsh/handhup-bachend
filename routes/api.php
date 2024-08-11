@@ -38,11 +38,13 @@ Route::post('search', [ProductController::class, 'search'])->name('project.show'
 
 Route::apiResource('category', CategoryController::class);
 
-Route::apiResource('report', ReportController::class)->middleware('auth:sanctum');
+Route::apiResource('Projects/{project_id}/report', ReportController::class)->middleware('auth:sanctum')->except('index');
+Route::get('reports', [ReportController::class, 'index'])->middleware('auth:sanctum');
 
-Route::apiResource('review', ReviewController::class)->middleware('auth:sanctum');
+Route::apiResource('Projects/{project_id}/product/{product_id}/review', ReviewController::class)->middleware('auth:sanctum')->except('index');
+Route::get('Projects/{project_id}/product/{product_id}/review', [ReviewController::class, 'index'])->withoutMiddleware('auth:sanctum');
 
-Route::apiResource('bill', BillController::class);
+Route::apiResource('bill', BillController::class)->middleware('auth:sanctum');
 
 Route::post('auth/access-token', [AccessTokensController::class, 'store'])
     ->middleware('guest:sanctum');
