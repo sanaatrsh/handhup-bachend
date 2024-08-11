@@ -5,16 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-<<<<<<< HEAD
 
-
-
-use App\Models\User;
-
-=======
-use App\Models\User;
-
->>>>>>> e1c42c8b1c898cba9eef82f8e76b57b0e9f2e92d
 class ProjectController extends Controller
 {
 

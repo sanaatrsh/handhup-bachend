@@ -116,6 +116,13 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
+
+
+     public function getOwners()
+{
+    $owners = User::where('type', 'owner')->paginate(10);
+    return response()->json($owners);
+}
     public function update(Request $request, string $id)
     {
         //
